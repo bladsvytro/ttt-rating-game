@@ -6,13 +6,11 @@ const CONFIG = {
   OWNER: 'bladsvytro',
   REPO:  'ttt-rating-game',
 
-  // (A) Безопасный путь: URL вашего Cloudflare Worker / Netlify Function.
-  //     Прокси сам держит PAT на сервере и зовёт repository_dispatch.
-  //     Если задан — токен ниже игнорируется.
-  PROXY_URL: '',
+  // Cloudflare Worker — прокси для GitHub API.
+  // PAT хранится зашифрованным в Worker-секрете, в браузер не попадает.
+  PROXY_URL: 'https://ttt-game-proxy.blads-vytro.workers.dev',
 
-  // (B) Демо-путь: вставьте fine-grained PAT (scope: Contents R/W одного репо).
-  //     ⚠️  Удалите перед публичным пушем или сразу ограничьте права.
+  // GH_TOKEN не нужен в браузере — Worker держит его на стороне Cloudflare.
   GH_TOKEN: '',
 
   // URL для чтения актуальных JSON из репо (обновляется Action после партий).

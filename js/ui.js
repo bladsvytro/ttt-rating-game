@@ -24,14 +24,13 @@ const UI = (() => {
   }
 
   // Обновить состояние доски (символы + блокировка)
-  function renderBoard(boardArr, disabled = false, dangerousCells = [], winLine = []) {
+  function renderBoard(boardArr, disabled = false, winLine = []) {
     document.querySelectorAll('#game-board .cell').forEach((cell, i) => {
       const val = boardArr[i];
       cell.textContent = val || '';
       cell.className   = 'cell' +
-        (val       ? ` taken symbol-${val.toLowerCase()}` : '') +
-        (winLine.includes(i) ? ' win-cell' : '') +
-        (dangerousCells.includes(i) && !val ? ' dangerous' : '');
+        (val ? ` taken symbol-${val.toLowerCase()}` : '') +
+        (winLine.includes(i) ? ' win-cell' : '');
       cell.disabled = disabled || !!val;
     });
   }

@@ -126,9 +126,7 @@
         <!-- 9 клеток строятся через JS -->
       </div>
 
-      <div class="danger-legend reverse-only" id="danger-legend">
-        <span class="danger-cell-sample"></span> Опасная клетка — не ставь сюда!
-      </div>
+
 
       <div class="game-actions">
         <button class="btn btn-primary" id="btn-rematch" style="display:none">Реванш</button>
@@ -178,9 +176,9 @@
   <!-- ====================== СКРИПТЫ ====================== -->
   <!-- PeerJS (для онлайн P2P) -->
   <script src="https://unpkg.com/peerjs@1/dist/peerjs.min.js"></script>
-  <!-- Firebase (для онлайн-подбора по рейтингу, закомментируйте если не нужен) -->
-  <!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>  -->
-  <!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script> -->
+  <!-- Firebase (онлайн-подбор по рейтингу) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <script src="js/config.js"></script>
   <script src="js/game.js"></script>
@@ -200,8 +198,7 @@
         if (hint) hint.textContent = btn.dataset.mode === 'reverse'
           ? 'Реверс: вынуди соперника собрать тройку первым — кто собрал, тот проиграл!'
           : 'Классика: первым собери 3 в ряд — победишь.';
-        const legend = document.getElementById('danger-legend');
-        if (legend) legend.style.display = btn.dataset.mode === 'reverse' ? '' : 'none';
+
       });
     });
 

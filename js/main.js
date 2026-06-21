@@ -245,24 +245,18 @@ const APP = (() => {
   }
 
   function _renderCurrentState() {
-    const dangerous = (appState.mode === 'reverse' && !appState.result)
-      ? BOT.getDangerousCells(appState.board, appState.current, appState.mode)
-      : [];
-
     const winLine = appState.result?.line || [];
 
     UI.renderBoard(
       appState.board,
       !!appState.busy || !!appState.result ||
         (appState.opponent === 'online' && appState.current !== appState.mySymbol),
-      dangerous,
       winLine
     );
 
     if (!appState.result) {
       const whose = appState.current === appState.mySymbol ? 'Ваш ход' : 'Ход соперника';
-      const dangerWarn = dangerous.length > 0 ? ' — осторожно: выделены опасные клетки!' : '';
-      UI.setStatus(`${whose} (${appState.current})${dangerWarn}`,
+      UI.setStatus(`${whose} (${appState.current})`,
                    appState.current === appState.mySymbol ? 'your-turn' : 'opp-turn');
     }
   }

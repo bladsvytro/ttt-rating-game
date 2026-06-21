@@ -205,18 +205,6 @@ input  { font: inherit; }
   border-color: var(--danger);
   box-shadow: 0 0 0 3px #f87171;
 }
-.cell.dangerous {
-  background: #fef2f2;
-  border-color: #fca5a5;
-  position: relative;
-}
-.cell.dangerous::after {
-  content: '⚠';
-  position: absolute;
-  font-size: .65rem;
-  top: 3px; right: 4px;
-  color: #ef4444;
-}
 
 @keyframes winPulse {
   0%   { transform: scale(1); }
@@ -224,18 +212,6 @@ input  { font: inherit; }
   100% { transform: scale(1); }
 }
 
-/* Легенда опасных клеток */
-.danger-legend {
-  display: flex; align-items: center; gap: 8px;
-  font-size: .75rem; color: var(--danger); margin-bottom: 10px;
-  background: var(--danger-bg); border-radius: 6px; padding: 6px 10px;
-}
-.danger-cell-sample {
-  display: inline-block; width: 16px; height: 16px;
-  border: 2px solid #fca5a5; border-radius: 3px;
-  background: #fef2f2;
-}
-.reverse-only { display: none; }
 [data-mode="reverse"] .reverse-only { display: flex; }
 
 .game-actions { display: flex; gap: 8px; justify-content: center; }

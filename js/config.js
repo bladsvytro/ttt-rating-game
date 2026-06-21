@@ -28,15 +28,14 @@ const CONFIG = {
   // Задержка хода бота (мс) — имитация раздумий
   BOT_DELAY_MS: 400,
 
-  // Firebase (для онлайн-подбора по рейтингу). Оставьте пустым, если не нужен.
   FIREBASE: {
-    apiKey:            '',
-    authDomain:        '',
-    databaseURL:       '',
-    projectId:         '',
-    storageBucket:     '',
-    messagingSenderId: '',
-    appId:             '',
+    apiKey:            'AIzaSyBX_aP6b_HoNHDZPW1NbVCLpgkjdYy5Arg',
+    authDomain:        'ttt-rating-game.firebaseapp.com',
+    databaseURL:       'https://ttt-rating-game-default-rtdb.firebaseio.com',
+    projectId:         'ttt-rating-game',
+    storageBucket:     'ttt-rating-game.firebasestorage.app',
+    messagingSenderId: '924418624697',
+    appId:             '1:924418624697:web:90b9026bdfe8fa2f8d9f68',
   },
 
   // PeerJS — публичный сигналинг-сервер (можно оставить дефолтный peerjs.com)

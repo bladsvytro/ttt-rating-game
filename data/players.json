@@ -4,10 +4,10 @@
       "id": "bladsvytro_test",
       "name": "Vladislav",
       "ratingClassic": 1020,
-      "ratingReverse": 1000,
+      "ratingReverse": 1020,
       "gamesClassic": 1,
-      "gamesReverse": 0,
-      "wins": 1,
+      "gamesReverse": 1,
+      "wins": 2,
       "losses": 0,
       "draws": 0,
       "createdAt": "2026-06-21T21:02:08.297Z"
@@ -16,14 +16,14 @@
       "id": "bot",
       "name": "Bot",
       "ratingClassic": 980,
-      "ratingReverse": 1000,
+      "ratingReverse": 980,
       "gamesClassic": 1,
-      "gamesReverse": 0,
+      "gamesReverse": 1,
       "wins": 0,
-      "losses": 1,
+      "losses": 2,
       "draws": 0,
       "createdAt": "2026-06-21T21:02:08.297Z"
     }
   ],
-  "updatedAt": "2026-06-21T21:02:08.297Z"
+  "updatedAt": "2026-06-21T21:06:57.827Z"
 }

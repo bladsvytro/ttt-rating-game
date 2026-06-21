@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "rank": 1,
+    "playerId": "bladsvytro_test",
+    "name": "Vladislav",
+    "rating": 1020,
+    "games": 1,
+    "wins": 2,
+    "losses": 0,
+    "draws": 0
+  },
+  {
+    "rank": 2,
+    "playerId": "bot",
+    "name": "Bot",
+    "rating": 980,
+    "games": 1,
+    "wins": 0,
+    "losses": 2,
+    "draws": 0
+  }
+]

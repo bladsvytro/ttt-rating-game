@@ -1,6 +1,13 @@
 {
   "bladsvytro_test": [
     {
+      "date": "2026-06-21T21:06:57.827Z",
+      "opponent": "Bot",
+      "mode": "reverse",
+      "result": "win",
+      "ratingDelta": 0
+    },
+    {
       "date": "2026-06-21T21:02:08.297Z",
       "opponent": "Bot",
       "mode": "classic",
@@ -9,6 +16,13 @@
     }
   ],
   "bot": [
+    {
+      "date": "2026-06-21T21:06:57.827Z",
+      "opponent": "Vladislav",
+      "mode": "reverse",
+      "result": "lose",
+      "ratingDelta": 0
+    },
     {
       "date": "2026-06-21T21:02:08.297Z",
       "opponent": "Vladislav",

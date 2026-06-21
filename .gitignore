@@ -1,0 +1,14 @@
+# Портфолио — не входит в репо игры
+bots/
+landings/
+portfolio/
+shared/
+*.png
+*.jpg
+*.jpeg
+*.mp4
+*.mov
+
+# Среда разработки
+.claude/
+node_modules/

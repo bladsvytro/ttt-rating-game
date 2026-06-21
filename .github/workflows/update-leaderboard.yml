@@ -1,0 +1,64 @@
+name: Update Leaderboard
+
+# Триггер: клиент отправляет repository_dispatch с event_type "game-result".
+# Для публичного репозитория минуты Actions БЕСПЛАТНЫ и безлимитны.
+on:
+  repository_dispatch:
+    types: [game-result]
+
+# Сериализуем параллельные запуски: новый запуск ждёт, пока предыдущий закончит.
+# cancel-in-progress: false — НЕ отменяем, а ставим в очередь.
+concurrency:
+  group: rating-update
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # нужно для git commit + push
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Берём последний commit (включая те, что могли добавиться пока мы ждали в очереди)
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run rating update
+        env:
+          # Передаём весь client_payload как JSON-строку в скрипт
+          GAME_RESULT: ${{ toJSON(github.event.client_payload) }}
+        run: node scripts/update-rating.js
+
+      - name: Commit and push (with retry on conflicts)
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add data/players.json \
+                  data/leaderboard_classic.json \
+                  data/leaderboard_reverse.json \
+                  data/history.json
+
+          # Выходим без ошибки, если нечего коммитить
+          if git diff --staged --quiet; then
+            echo "Nothing to commit, skipping."
+            exit 0
+          fi
+
+          git commit -m "chore(rating): update leaderboard [skip ci]"
+
+          # Retry-цикл: до 3 попыток rebase + push на случай гонки
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && break
+            echo "Push attempt $i failed, retrying..."
+            sleep 2
+          done

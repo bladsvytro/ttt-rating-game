@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Крестики-нолики с рейтингом</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-mode="classic">
+
+  <!-- Тост-уведомления -->
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <!-- ====================== МЕНЮ ====================== -->
+  <section id="screen-menu" class="screen is-active">
+    <div class="container">
+      <h1 class="logo">✕ ○</h1>
+      <h2 class="app-title">Крестики-нолики</h2>
+
+      <div class="card">
+        <h3>Режим игры</h3>
+        <div class="btn-group">
+          <button class="btn btn-mode active" data-mode="classic">Классика</button>
+          <button class="btn btn-mode" data-mode="reverse">Реверс</button>
+        </div>
+        <p class="mode-hint" id="mode-hint">
+          Классика: первым собери 3 в ряд — победишь.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Соперник</h3>
+        <div class="btn-group">
+          <button class="btn btn-opp active" data-opponent="bot">Бот</button>
+          <button class="btn btn-opp" data-opponent="local">Локально</button>
+          <button class="btn btn-opp" data-opponent="online">Онлайн</button>
+        </div>
+        <div id="diff-controls" class="diff-row">
+          <span>Сложность:</span>
+          <button class="btn btn-diff" data-diff="easy">Лёгкий</button>
+          <button class="btn btn-diff" data-diff="medium">Средний</button>
+          <button class="btn btn-diff active" data-diff="hard">Сложный</button>
+        </div>
+        <div id="online-controls" class="online-row" style="display:none">
+          <div id="room-code-wrap" style="display:none">
+            Код комнаты: <strong id="room-code"></strong>
+            <button class="btn btn-sm" id="btn-copy-room">Копировать</button>
+          </div>
+          <input id="join-room-input" class="input" placeholder="Код комнаты для подключения" maxlength="8">
+          <button class="btn" id="btn-join-room">Войти в комнату</button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-play" id="btn-play">Играть</button>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" id="btn-to-profile">Профиль</button>
+        <button class="btn btn-ghost" id="btn-to-leaderboard">Рейтинг</button>
+        <button class="btn btn-ghost" id="btn-to-history">История</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== ПРОФИЛЬ ====================== -->
+  <section id="screen-profile" class="screen">
+    <div class="container">
+      <div class="screen-header">
+        <button class="btn btn-ghost" id="btn-back-profile">← Назад</button>
+        <h2>Профиль</h2>
+      </div>
+
+      <div class="card profile-card">
+        <div class="profile-avatar">🎮</div>
+        <h3 id="profile-name-display">Игрок</h3>
+        <div class="profile-ratings">
+          <div class="rating-block">
+            <span class="rating-label">Классика</span>
+            <span class="rating-value" id="profile-rating-classic">1000</span>
+            <span class="games-count">Игр: <span id="profile-games-classic">0</span></span>
+          </div>
+          <div class="rating-block reverse">
+            <span class="rating-label">Реверс</span>
+            <span class="rating-value" id="profile-rating-reverse">1000</span>
+            <span class="games-count">Игр: <span id="profile-games-reverse">0</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Изменить имя</h3>
+        <input id="profile-name-input" class="input" placeholder="Ваше имя" maxlength="20">
+        <button class="btn btn-primary" id="btn-save-name">Сохранить</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== ИГРА ====================== -->
+  <section id="screen-game" class="screen">
+    <div class="container">
+      <div class="screen-header">
+        <button class="btn btn-ghost" id="btn-back-game">← Меню</button>
+        <button class="btn btn-ghost" id="btn-new-game">Новая</button>
+      </div>
+
+      <div class="players-row">
+        <div class="player-info">
+          <span class="player-symbol symbol-x">✕</span>
+          <span id="player-left-name">Игрок X</span>
+          <span class="rating-delta" id="delta-left"></span>
+        </div>
+        <div class="session-score">
+          <span class="s-wins" id="session-wins">0</span> /
+          <span class="s-draws" id="session-draws">0</span> /
+          <span class="s-losses" id="session-losses">0</span>
+        </div>
+        <div class="player-info right">
+          <span class="player-symbol symbol-o">○</span>
+          <span id="player-right-name">Игрок O</span>
+          <span class="rating-delta" id="delta-right"></span>
+        </div>
+      </div>
+
+      <p class="game-status" id="game-status">Ваш ход</p>
+
+      <div id="game-board" class="board" role="grid" aria-label="Игровое поле">
+        <!-- 9 клеток строятся через JS -->
+      </div>
+
+      <div class="danger-legend reverse-only" id="danger-legend">
+        <span class="danger-cell-sample"></span> Опасная клетка — не ставь сюда!
+      </div>
+
+      <div class="game-actions">
+        <button class="btn btn-primary" id="btn-rematch" style="display:none">Реванш</button>
+        <button class="btn btn-ghost" id="btn-share-move" style="display:none">📎 Поделиться ходом</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== ОЖИДАНИЕ ====================== -->
+  <section id="screen-waiting" class="screen">
+    <div class="container center">
+      <div class="spinner"></div>
+      <h2>Ищем соперника...</h2>
+      <p>Окно рейтинга расширяется каждые 5 секунд</p>
+      <p class="timer-display">Осталось: <span id="waiting-timer">120 с</span></p>
+      <button class="btn btn-ghost" id="btn-cancel-wait">Отмена</button>
+    </div>
+  </section>
+
+  <!-- ====================== ЛИДЕРБОРД ====================== -->
+  <section id="screen-leaderboard" class="screen">
+    <div class="container">
+      <div class="screen-header">
+        <button class="btn btn-ghost" id="btn-back-leaderboard">← Назад</button>
+        <h2>Таблица рейтинга</h2>
+      </div>
+      <p class="hint">Нажмите на заголовок колонки для сортировки</p>
+      <div id="leaderboard-table">
+        <p>Загрузка...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== ИСТОРИЯ ====================== -->
+  <section id="screen-history" class="screen">
+    <div class="container">
+      <div class="screen-header">
+        <button class="btn btn-ghost" id="btn-back-history">← Назад</button>
+        <h2>История партий</h2>
+      </div>
+      <div id="history-list">
+        <p>Загрузка...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== СКРИПТЫ ====================== -->
+  <!-- PeerJS (для онлайн P2P) -->
+  <script src="https://unpkg.com/peerjs@1/dist/peerjs.min.js"></script>
+  <!-- Firebase (для онлайн-подбора по рейтингу, закомментируйте если не нужен) -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>  -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script> -->
+
+  <script src="js/config.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/bot.js"></script>
+  <script src="js/rating.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/online.js"></script>
+  <script src="js/matchmaking.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    // Динамическое поведение меню (hint + переключение панелей)
+    document.querySelectorAll('[data-mode]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const hint = document.getElementById('mode-hint');
+        if (hint) hint.textContent = btn.dataset.mode === 'reverse'
+          ? 'Реверс: вынуди соперника собрать тройку первым — кто собрал, тот проиграл!'
+          : 'Классика: первым собери 3 в ряд — победишь.';
+        const legend = document.getElementById('danger-legend');
+        if (legend) legend.style.display = btn.dataset.mode === 'reverse' ? '' : 'none';
+      });
+    });
+
+    document.querySelectorAll('[data-opponent]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const diffControls   = document.getElementById('diff-controls');
+        const onlineControls = document.getElementById('online-controls');
+        if (diffControls)   diffControls.style.display   = btn.dataset.opponent === 'bot'    ? '' : 'none';
+        if (onlineControls) onlineControls.style.display = btn.dataset.opponent === 'online' ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

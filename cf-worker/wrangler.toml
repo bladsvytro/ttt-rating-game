@@ -1,0 +1,14 @@
+name = "ttt-game-proxy"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Явно включаем workers.dev URL
+workers_dev = true
+
+# Секреты задаются через: wrangler secret put GH_TOKEN
+# Не хранить токен в этом файле!
+
+[vars]
+ALLOWED_ORIGIN = "https://bladsvytro.github.io"
+GH_OWNER = "bladsvytro"
+GH_REPO = "ttt-rating-game"

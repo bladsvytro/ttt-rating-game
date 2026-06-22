@@ -9,6 +9,12 @@ shared/
 *.mp4
 *.mov
 
+# Секреты и токены
+fb_token.txt
+
+# Cloudflare Worker — сборочные артефакты
+cf-worker/.wrangler/
+
 # Среда разработки
 .claude/
 node_modules/
